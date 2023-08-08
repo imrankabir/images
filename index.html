@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel='shortcut icon' type='image/x-icon' href='favicon.jpg'>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Wallpapers</title>
+	<style type="text/css">
+		*, *::before, *::after {
+			box-sizing: border-box;
+			padding: 0;
+			margin: 0;
+		}
+		body {
+			display: grid;
+			place-items: center;
+			height: 100vh;
+			background: #ccc;
+		}
+	</style>
+</head>
+<body>
+  
+	<script type="text/javascript">
+
+		const speed = (new URLSearchParams(window.location.search)).get('speed') ?? 3000;
+		const body = document.body, bodyStyle = body.style;
+		bodyStyle.backgroundRepeat = 'no-repeat';
+		bodyStyle.backgroundSize = 'cover';
+		bodyStyle.backgroundPosition = 'center';
+		bodyStyle.backgroundAttachment = 'fixed';
+		let width = window.innerWidth, height = window.innerHeight;
+	
+		window.onresize = e => {
+			width = window.innerWidth;
+			height = window.innerHeight;
+		};
+		
+		async function loadImage() {
+			const response = await fetch('https://picsum.photos/' + width + '/' + height);
+			const blob = await response.blob();
+			bodyStyle.backgroundImage = `url('${URL.createObjectURL(blob)}')`;
+		};
+    
+		loadImage();
+		
+    setInterval(loadImage, speed);
+	
+  </script>
+</body>
+</html>
