@@ -70,17 +70,7 @@
 			width = window.innerWidth;
 			height = window.innerHeight;
 		};
-    	document.querySelector('.prev-btn').addEventListener('click', event => {
-    		currentState = 'pause';
-    		document.querySelector('.play-btn').innerHTML = '&#10148;';
-    		currentImage = currentImage === null ? images.length - 1 : currentImage - 1;
-    		if (currentImage === -1) {
-    			currentImage = images.length - 1;
-    		} 
-    		clearInterval(interval);
-    		loadImage();
-    	});
-    	document.querySelector('.download-btn').addEventListener('click', event => {
+		document.querySelector('.download-btn').addEventListener('click', event => {
     		let imageIndex = null;
     		let imageBlob = null;
     		if (currentState === 'play') {
@@ -96,13 +86,23 @@
             a.click();
             URL.revokeObjectURL(url);
     	});
+    	document.querySelector('.prev-btn').addEventListener('click', event => {
+    		currentState = 'pause';
+    		document.querySelector('.play-btn').innerHTML = '&#10148;';
+    		currentImage = currentImage === null ? images.length - 1 : currentImage - 1;
+    		if (currentImage === -1) {
+    			currentImage = images.length - 1;
+    		} 
+    		clearInterval(interval);
+    		loadImage();
+    	});
     	document.querySelector('.play-btn').addEventListener('click', event => {
     		currentState = currentState === 'play' ? 'pause' : 'play';
 	    	currentImage = null;
     		if (currentState === 'play') {
 	    		document.querySelector('.play-btn').innerHTML = '&#9868;';
-    		} else {
 	    		interval = setInterval(loadImage, speed);
+    		} else {
 	    		document.querySelector('.play-btn').innerHTML = '&#10148;';
     		}
     	});
