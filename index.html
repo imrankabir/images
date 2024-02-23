@@ -23,7 +23,6 @@
 			bottom: 10px;
 			display: none;
 			position: fixed;
-			left: calc(50% - 100px);
 		}
 		.btn,
 		.download-btn {
@@ -59,7 +58,8 @@
 		let previousImage = null;
 		let currentState = 'play';
 		const images = [];
-		const speed = (new URLSearchParams(window.location.search)).get('speed') ?? 3000;
+		let speed = (new URLSearchParams(window.location.search)).get('speed') ?? 3;
+		speed *= 1000;
 		const body = document.body, bodyStyle = body.style;
 		bodyStyle.backgroundRepeat = 'no-repeat';
 		bodyStyle.backgroundSize = 'cover';
