@@ -49,13 +49,17 @@
 	<button class="download-btn">&#8595;</button>
   	<div class="btns">
   		<button class="btn prev-btn">&#10094;</button>
-  		<button class="btn play-btn">&#9868;</button>
+  		<button class="btn control-btn">&#9868;</button>
   		<button class="btn next-btn">&#10095;</button>
   	</div>
 	<script type="text/javascript">
-		let interval = null;
-		let currentImage = null;
-		let previousImage = null;
+		const playIcon = '&#9868;';
+		const pauseIcon = '&#10148;';
+		const prevBtn = document.querySelector('.prev-btn');
+		const nextBtn = document.querySelector('.next-btn');
+		const controlBtn = document.querySelector('.control-btn');
+		const downloadBtn = document.querySelector('.download-btn');
+		let interval = currentImage = previousImage = null;
 		let currentState = 'play';
 		const images = [];
 		let speed = (new URLSearchParams(window.location.search)).get('speed') ?? 3;
@@ -70,9 +74,8 @@
 			width = window.innerWidth;
 			height = window.innerHeight;
 		};
-		document.querySelector('.download-btn').addEventListener('click', event => {
-    		let imageIndex = null;
-    		let imageBlob = null;
+		downloadBtn.addEventListener('click', event => {
+    		let imageIndex = imageBlob = null;
     		if (currentState === 'play') {
     			imageIndex = images.length - 1;
     		} else {
@@ -86,29 +89,30 @@
             a.click();
             URL.revokeObjectURL(url);
     	});
-    	document.querySelector('.prev-btn').addEventListener('click', event => {
+    	prevBtn.addEventListener('click', event => {
     		currentState = 'pause';
-    		document.querySelector('.play-btn').innerHTML = '&#10148;';
-    		currentImage = currentImage === null ? images.length - 1 : currentImage - 1;
+    		controlBtn.innerHTML = pauseIcon;
+    		currentImage = currentImage === null ? images.length - 2 : currentImage - 1;
     		if (currentImage === -1) {
     			currentImage = images.length - 1;
     		} 
     		clearInterval(interval);
     		loadImage();
     	});
-    	document.querySelector('.play-btn').addEventListener('click', event => {
+    	controlBtn.addEventListener('click', event => {
     		currentState = currentState === 'play' ? 'pause' : 'play';
 	    	currentImage = null;
     		if (currentState === 'play') {
-	    		document.querySelector('.play-btn').innerHTML = '&#9868;';
 	    		interval = setInterval(loadImage, speed);
+	    		controlBtn.innerHTML = playIcon;
     		} else {
-	    		document.querySelector('.play-btn').innerHTML = '&#10148;';
+    			clearInterval(interval);
+	    		controlBtn.innerHTML = pauseIcon;
     		}
     	});
-    	document.querySelector('.next-btn').addEventListener('click', event => {
+    	nextBtn.addEventListener('click', event => {
     		currentState = 'pause';
-    		document.querySelector('.play-btn').innerHTML = '&#10148;';
+    		controlBtn.innerHTML = pauseIcon;
     		currentImage = currentImage === null ? 0 : currentImage + 1;
     		if (currentImage === images.length) {
     			currentImage = 0;
