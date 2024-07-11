@@ -66,14 +66,14 @@
       const images = [];
       let speed = new URLSearchParams(window.location.search).get("speed") ?? 3;
       speed *= 1000;
-      const body = document.body,
-        bodyStyle = body.style;
+      const body = document.body;
+      const bodyStyle = body.style;
       bodyStyle.backgroundRepeat = "no-repeat";
       bodyStyle.backgroundSize = "cover";
       bodyStyle.backgroundPosition = "center";
       bodyStyle.backgroundAttachment = "fixed";
-      let width = window.innerWidth,
-        height = window.innerHeight;
+      let width = window.innerWidth;
+      let height = window.innerHeight;
       window.onresize = (e) => {
         width = window.innerWidth;
         height = window.innerHeight;
@@ -98,7 +98,7 @@
         imagesCount = images.length;
         console.table({ currentState, currentImage, imagesCount });
       }
-      const download = (event) => {
+      const download = () => {
         let imageIndex = (imageBlob = null);
         if (currentState === "play") {
           imageIndex = images.length - 1;
@@ -113,7 +113,7 @@
         a.click();
         URL.revokeObjectURL(url);
       };
-      const prev = (event) => {
+      const prev = () => {
         currentState = "pause";
         controlBtn.innerHTML = pauseIcon;
         currentImage =
@@ -124,7 +124,7 @@
         clearInterval(interval);
         loadImage();
       };
-      const control = (event) => {
+      const control = () => {
         currentState = currentState === "play" ? "pause" : "play";
         currentImage = null;
         if (currentState === "play") {
@@ -135,7 +135,7 @@
           controlBtn.innerHTML = pauseIcon;
         }
       };
-      const next = (event) => {
+      const next = () => {
         currentState = "pause";
         controlBtn.innerHTML = pauseIcon;
         currentImage = currentImage === null ? 0 : currentImage + 1;
@@ -151,9 +151,8 @@
       nextBtn.addEventListener("click", next);
       interval = setInterval(loadImage, speed);
       loadImage();
-      document.addEventListener("keydown", (event) => {
-        console.log(event.which);
-        switch (event.which) {
+      document.addEventListener("keydown", (e) => {
+        switch (e.which) {
           case 32:
           case 38:
             control();
