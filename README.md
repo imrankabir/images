@@ -1,6 +1,6 @@
 # Use can use it on the following link
 
-Click to use Images App (https://imrankabir.github.io/images)
+Click to use [Images App](https://imrankabir.github.io/images)
 
 * To pause/resume use Up Arrow Key
 * To download use Down Arrow Key or 'd' Key
