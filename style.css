@@ -1,0 +1,39 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  height: 100vh;
+  display: grid;
+  background: #ccc;
+  position: relative;
+  place-items: center;
+}
+.btns {
+  padding: 2px;
+  bottom: 10px;
+  display: none;
+  position: fixed;
+}
+.btn,
+.download-btn {
+  padding: 8px;
+  cursor: pointer;
+  font-size: 20px;
+  border: 1px solid yellow;
+}
+.download-btn {
+  top: 10px;
+  right: 10px;
+  display: none;
+  position: fixed;
+  aspect-ratio: 2 / 1;
+  border: 1px solid yellow;
+}
+body:hover .btns,
+body:hover .download-btn {
+  display: block;
+}
