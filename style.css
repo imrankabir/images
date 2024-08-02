@@ -31,7 +31,6 @@ body {
   display: none;
   position: fixed;
   aspect-ratio: 2 / 1;
-  border: 1px solid yellow;
 }
 body:hover .btns,
 body:hover .download-btn {
