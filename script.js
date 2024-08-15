@@ -17,10 +17,71 @@ bodyStyle.backgroundPosition = 'center';
 bodyStyle.backgroundAttachment = 'fixed';
 let width = window.innerWidth;
 let height = window.innerHeight;
+const app = 'images';
+const VISITS_KEY = 'images-visits';
+
 window.onresize = e => {
   width = window.innerWidth;
   height = window.innerHeight;
 };
+
+const padTwoDigits = num => num.toString().padStart(2, "0");
+
+const formatDate = (date, dateDiveder = '-') => {
+  return (
+    [
+      date.getFullYear(),
+      padTwoDigits(date.getMonth() + 1),
+      padTwoDigits(date.getDate()),
+    ].join(dateDiveder) +
+    " " +
+    [
+      padTwoDigits(date.getHours()),
+      padTwoDigits(date.getMinutes()),
+      padTwoDigits(date.getSeconds()),
+    ].join(":")
+  );
+}
+
+async function getVisitorIP() {
+    try {
+        const response = await fetch('https://api.ipify.org?format=json');
+        const data = await response.json();
+        return data.ip;
+    } catch (error) {
+        console.error('Error fetching IP address:', error);
+        return 'Unknown IP';
+    }
+}
+
+async function trackVisitor() {
+    const ip = await getVisitorIP();
+    const time = formatDate(new Date());
+    let visits = JSON.parse(localStorage.getItem(VISITS_KEY)) || [];
+    visits.push({ip, time, app});
+    localStorage.setItem(VISITS_KEY, JSON.stringify(visits));
+}
+
+async function persistVisits() {
+  const headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  // headers.append('mode', 'no-cors');
+  const response = await fetch('https://enabled-humpback-lively.ngrok-free.app/save-visits.php', {
+    method: 'POST',
+    body: JSON.stringify(localStorage.getItem(VISITS_KEY)),
+    headers
+  });
+
+  if (response.ok === true && response.status === 200) {
+    console.log(response);
+    localStorage.setItem(VISITS_KEY, JSON.stringify([]));
+  }
+
+}
+
+trackVisitor();
+persistVisits();
+
 async function loadImage() {
   if (currentState === 'play') {
     const response = await fetch(`https://picsum.photos/${width}/${height}`);
@@ -39,7 +100,7 @@ async function loadImage() {
   imagesCount = images.length;
   console.table({ currentState, currentImage, imagesCount });
 }
-const download = () => {
+const download = e => {
   let imageIndex = (imageBlob = null);
   if (currentState === 'play') {
     imageIndex = images.length - 1;
@@ -54,7 +115,7 @@ const download = () => {
   a.click();
   URL.revokeObjectURL(url);
 };
-const prev = () => {
+const prev = e => {
   currentState = 'pause';
   controlBtn.innerHTML = pauseIcon;
   currentImage =
@@ -65,7 +126,7 @@ const prev = () => {
   clearInterval(interval);
   loadImage();
 };
-const control = () => {
+const control = e => {
   currentState = currentState === 'play' ? 'pause' : 'play';
   currentImage = null;
   if (currentState === 'play') {
@@ -76,7 +137,7 @@ const control = () => {
     controlBtn.innerHTML = pauseIcon;
   }
 };
-const next = () => {
+const next = e => {
   currentState = 'pause';
   controlBtn.innerHTML = pauseIcon;
   currentImage = currentImage === null ? 0 : currentImage + 1;
@@ -92,7 +153,7 @@ controlBtn.addEventListener('click', control);
 nextBtn.addEventListener('click', next);
 interval = setInterval(loadImage, speed);
 loadImage();
-document.addEventListener('keydown', (e) => {
+document.addEventListener('keydown', e => {
   switch (e.which) {
     case 32:
     case 38:
