@@ -17,7 +17,7 @@ bodyStyle.backgroundPosition = 'center';
 bodyStyle.backgroundAttachment = 'fixed';
 let width = window.innerWidth;
 let height = window.innerHeight;
-const app = 'images';
+const app = 'Images';
 const VISITS_KEY = 'images-visits';
 
 window.onresize = e => {
