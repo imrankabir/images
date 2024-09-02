@@ -25,7 +25,7 @@ window.onresize = e => {
   height = window.innerHeight;
 };
 
-trackVisitor();
+// trackVisitor();
 
 async function loadImage() {
   if (currentState === 'play') {
